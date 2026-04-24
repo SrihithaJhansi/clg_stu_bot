@@ -1,34 +1,46 @@
-import google.generativeai as genai
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-model = genai.GenerativeModel("gemini-2.5-flash-lite")
-
-
 def get_answer(query, db):
-    docs = db.similarity_search(query, k=3)
 
-    context = "\n".join([d.page_content for d in docs])
+    query_lower = query.lower()
 
-    prompt = f"""
-You are a college admission assistant.
+    # Fix typo
+    if "bda" in query_lower:
+        query_lower = query_lower.replace("bda", "bds")
 
-Use ONLY the provided context.
-If information is missing, say "I don't know".
+    # Detect course
+    courses = ["bba", "bcom", "bds", "btech", "ece", "civil", "bjmc"]
+    detected_course = next((c for c in courses if c in query_lower), None)
 
-Context:
-{context}
+    # Detect city
+    cities = ["chennai", "jaipur", "noida", "lucknow", "mysore", "ahmedabad"]
+    detected_city = next((c for c in cities if c in query_lower), None)
 
-Question:
-{query}
+    docs = db.similarity_search(query, k=10)
 
-Answer in clear bullet points.
-"""
+    filtered_docs = []
+    for d in docs:
+        if detected_city and detected_city not in d.metadata.get("city", ""):
+            continue
+        if detected_course and detected_course not in d.metadata.get("course", ""):
+            continue
+        filtered_docs.append(d)
 
-    response = model.generate_content(prompt)
-    print("CONTEXT SENT TO LLM:\n", context)
-    return response.text
+    if not filtered_docs:
+        return "❌ No matching colleges found."
+
+    # 🔥 Intent Handling
+    if "exam" in query_lower:
+        return format_exam(filtered_docs)
+
+    if "fee" in query_lower or "lowest" in query_lower:
+        return format_fees(filtered_docs)
+
+    if "eligibility" in query_lower:
+        return format_eligibility(filtered_docs)
+
+    if "scholarship" in query_lower:
+        return format_scholarship(filtered_docs)
+
+    if "placement" in query_lower:
+        return format_placement(filtered_docs)
+
+    return format_colleges(filtered_docs)

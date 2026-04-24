@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Assistant - AI-Powered College Recommendations</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>College Assistant</h1>
+                </div>
+                <div class="subtitle">AI-Powered College Recommendations</div>
+            </div>
+        </header>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="status">
+                    <div class="status-indicator" id="status-indicator"></div>
+                    <span id="status-text">Connecting...</span>
+                </div>
+                <div class="orchestration-mode">
+                    <label for="mode-select">Mode:</label>
+                    <select id="mode-select">
+                        <option value="simple">Simple</option>
+                        <option value="lcel">Enhanced</option>
+                        <option value="agent">Intelligent</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-message">
+                    <div class="bot-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            👋 Hi! I'm your AI college assistant. Ask me about colleges, courses, fees, entrance exams, or anything related to college admissions!
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="input-container">
+                    <input
+                        type="text"
+                        id="user-input"
+                        placeholder="Ask about colleges, courses, fees..."
+                        maxlength="500"
+                    />
+                    <button id="send-button" class="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <div class="typing-indicator" id="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="char-count">
+                        <span id="char-count">0</span>/500
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-questions">
+            <div class="quick-questions-title">Quick Questions:</div>
+            <div class="question-tags">
+                <button class="question-tag" onclick="askQuestion('BBA colleges in Chennai')">BBA in Chennai</button>
+                <button class="question-tag" onclick="askQuestion('colleges with low fees')">Low Fee Colleges</button>
+                <button class="question-tag" onclick="askQuestion('entrance exam requirements')">Entrance Exams</button>
+                <button class="question-tag" onclick="askQuestion('colleges with good placements')">Good Placements</button>
+                <button class="question-tag" onclick="askQuestion('BDS colleges')">BDS Colleges</button>
+                <button class="question-tag" onclick="askQuestion('scholarship available')">Scholarships</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
